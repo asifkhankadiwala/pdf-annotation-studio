@@ -1,8 +1,8 @@
 # PDF Annotation Studio
 
-A standalone **jQuery + HTML + PDF.js** demo for marking up PDFs in the browser — built as a portfolio piece for freelance profiles (e.g. Upwork).
+A **Vue 3 + PDF.js** demo for marking up PDFs in the browser — built as a portfolio piece for freelance profiles (e.g. Upwork).
 
-![Tech stack](https://img.shields.io/badge/jQuery-3.7-blue) ![PDF.js](https://img.shields.io/badge/PDF.js-4.10-red) ![License](https://img.shields.io/badge/license-MIT-green)
+![Tech stack](https://img.shields.io/badge/Vue-3-green) ![PDF.js](https://img.shields.io/badge/PDF.js-4.10-red) ![License](https://img.shields.io/badge/license-MIT-green)
 
 ## Features
 
@@ -16,6 +16,7 @@ A standalone **jQuery + HTML + PDF.js** demo for marking up PDFs in the browser 
   - Rectangle boxes
   - Sticky notes with editable text
   - Freehand drawing (ink)
+- **Sign mode** (`/sign`) — click fields to fill, replace with draggable text, export signed PDF
 - **Color palette** and adjustable stroke width
 - **Multi-page** rendering with page navigation and zoom
 - **Annotations sidebar** — click an item to jump to its page
@@ -24,42 +25,46 @@ A standalone **jQuery + HTML + PDF.js** demo for marking up PDFs in the browser 
 
 ## Quick start
 
-No build step required. Serve the folder over HTTP (PDF.js needs a server for file loading in some browsers).
-
-### Option 1 — Python
-
 ```bash
-cd pdfannotations
-python3 -m http.server 8080
+npm install
+npm run dev
 ```
 
 Open [http://localhost:8080](http://localhost:8080)
 
-### Option 2 — PHP
+- **Markup studio**: `/`
+- **Sign mode**: `/sign`
+
+### Production build
 
 ```bash
-php -S localhost:8080
-```
-
-### Option 3 — npx
-
-```bash
-npx serve .
+npm run build
+npm run preview
 ```
 
 ## Project structure
 
 ```
 pdfannotations/
-├── index.html          # Main UI
+├── index.html              # Vite entry
+├── src/
+│   ├── main.js
+│   ├── App.vue
+│   ├── router/index.js
+│   ├── views/
+│   │   ├── MarkupStudio.vue
+│   │   └── SignMode.vue
+│   ├── lib/
+│   │   ├── pdf-viewer.js
+│   │   ├── annotation-manager.js
+│   │   ├── field-config.js
+│   │   ├── user-profile.js
+│   │   └── export-pdf.js
+│   └── composables/
 ├── css/
-│   └── styles.css      # Dark theme, toolbar, sidebar
-├── js/
-│   ├── app.js          # jQuery wiring, file load, export
-│   ├── field-config.js # Party & document field definitions
-│   ├── pdf-viewer.js   # PDF.js canvas rendering
-│   └── annotation-manager.js  # Tools, storage, overlay layer
-└── README.md
+│   ├── styles.css
+│   └── sign.css
+└── legacy/                 # Original jQuery version (reference)
 ```
 
 ## How it works
@@ -68,18 +73,28 @@ pdfannotations/
 2. An **annotation layer** (`<div>`) is stacked on top of each page (same dimensions).
 3. Coordinates are stored **normalized** (0–1) so annotations scale when zoom changes.
 4. Annotations live in memory and can be **exported as JSON** for persistence or demos.
+5. **Sign mode** replaces field widgets with draggable `filled_text` annotations on click.
+6. **Export PDF** uses `pdf-lib` to bake annotations into a downloadable PDF.
 
-> Note: This demo stores annotations separately from the PDF file. Embedding into the PDF binary would require a server-side library (e.g. iText, PDFLib) — a common follow-up for production projects.
+## Legacy jQuery version
 
-## Upwork / portfolio tips
-
-- Record a **2–3 minute Loom** showing: load PDF → highlight → add note → export JSON → re-import.
-- Mention **PDF.js overlay architecture**, normalized coordinates, and jQuery event delegation.
-- Link this repo and the live demo URL in your profile.
+The original jQuery implementation is preserved in `legacy/` and `js/` for reference.
 
 ## Browser support
 
 Chrome, Firefox, Safari, Edge (modern versions). Requires JavaScript enabled.
+
+## Security
+
+This project includes supply-chain hardening for **Shai-Hulud / SHA1-Hulud**-class npm attacks. See [SECURITY.md](SECURITY.md).
+
+After installing or updating dependencies:
+
+```bash
+npm run security:check
+```
+
+CI runs `npm ci --ignore-scripts`, audit, Shai-Hulud scanning, and build verification on every push.
 
 ## License
 

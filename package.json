@@ -1,16 +1,37 @@
 {
   "name": "pdf-annotation-studio",
-  "version": "1.0.0",
-  "description": "Browser-based PDF annotation demo with jQuery and PDF.js",
+  "version": "2.0.0",
+  "description": "Browser-based PDF annotation and contract signing demo with Vue 3 and PDF.js",
   "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20",
+    "npm": ">=10"
+  },
   "scripts": {
-    "start": "npx --yes serve . -p 8080",
-    "dev": "python3 -m http.server 8080"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite --port 8080",
+    "security:scan": "node scripts/security/shai-hulud-scan.mjs",
+    "security:lifecycle": "node scripts/security/audit-lifecycle-scripts.mjs",
+    "security:audit": "npm audit --audit-level=moderate",
+    "security:check": "npm run security:audit && npm run security:scan && npm run security:lifecycle"
+  },
+  "dependencies": {
+    "pdf-lib": "1.17.1",
+    "pdfjs-dist": "4.10.38",
+    "vue": "3.5.13",
+    "vue-router": "4.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "5.2.1",
+    "vite": "6.4.3"
   },
   "keywords": [
     "pdf",
     "annotations",
-    "jquery",
+    "vue3",
     "pdf.js",
     "portfolio"
   ],

@@ -1,0 +1,45 @@
+name: Security
+
+on:
+  push:
+    branches: [main, vue]
+  pull_request:
+    branches: [main, vue]
+  schedule:
+    # Weekly supply-chain check
+    - cron: '0 9 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  supply-chain:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install (ignore lifecycle scripts)
+        run: npm ci --ignore-scripts
+
+      - name: Rebuild trusted native deps
+        run: npm rebuild esbuild 2>/dev/null || true
+
+      - name: npm audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: Shai-Hulud indicator scan
+        run: npm run security:scan
+
+      - name: Lifecycle script inventory
+        run: npm run security:lifecycle
+
+      - name: Build
+        run: npm run build
