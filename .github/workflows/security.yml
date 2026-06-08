@@ -2,9 +2,9 @@ name: Security
 
 on:
   push:
-    branches: [main, vue]
+    branches: [main, vue, react]
   pull_request:
-    branches: [main, vue]
+    branches: [main, vue, react]
   schedule:
     # Weekly supply-chain check
     - cron: '0 9 * * 1'

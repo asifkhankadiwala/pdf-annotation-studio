@@ -1,8 +1,8 @@
 # PDF Annotation Studio
 
-A **Vue 3 + PDF.js** demo for marking up PDFs in the browser — built as a portfolio piece for freelance profiles (e.g. Upwork).
+A **React + PDF.js** demo for marking up PDFs in the browser — built as a portfolio piece for freelance profiles (e.g. Upwork).
 
-![Tech stack](https://img.shields.io/badge/Vue-3-green) ![PDF.js](https://img.shields.io/badge/PDF.js-4.10-red) ![License](https://img.shields.io/badge/license-MIT-green)
+![Tech stack](https://img.shields.io/badge/React-19-blue) ![PDF.js](https://img.shields.io/badge/PDF.js-4.10-red) ![License](https://img.shields.io/badge/license-MIT-green)
 
 ## Features
 
@@ -48,24 +48,33 @@ npm run preview
 pdfannotations/
 ├── index.html              # Vite entry
 ├── src/
-│   ├── main.js
-│   ├── App.vue
-│   ├── router/index.js
-│   ├── views/
-│   │   ├── MarkupStudio.vue
-│   │   └── SignMode.vue
+│   ├── main.jsx
+│   ├── App.jsx
+│   ├── pages/
+│   │   ├── MarkupStudio.jsx
+│   │   └── SignMode.jsx
+│   ├── components/
+│   │   └── AppToast.jsx
+│   ├── context/
+│   │   └── ToastContext.jsx
 │   ├── lib/
 │   │   ├── pdf-viewer.js
 │   │   ├── annotation-manager.js
 │   │   ├── field-config.js
 │   │   ├── user-profile.js
-│   │   └── export-pdf.js
-│   └── composables/
+│   │   ├── export-pdf.js
+│   │   └── pdfjs.js
+│   └── ...
 ├── css/
 │   ├── styles.css
 │   └── sign.css
 └── legacy/                 # Original jQuery version (reference)
 ```
+
+## Other framework branches
+
+- **`vue`** branch — Vue 3 + Vite implementation
+- **`main`** branch — original jQuery version
 
 ## How it works
 
@@ -75,14 +84,6 @@ pdfannotations/
 4. Annotations live in memory and can be **exported as JSON** for persistence or demos.
 5. **Sign mode** replaces field widgets with draggable `filled_text` annotations on click.
 6. **Export PDF** uses `pdf-lib` to bake annotations into a downloadable PDF.
-
-## Legacy jQuery version
-
-The original jQuery implementation is preserved in `legacy/` and `js/` for reference.
-
-## Browser support
-
-Chrome, Firefox, Safari, Edge (modern versions). Requires JavaScript enabled.
 
 ## Security
 
@@ -94,7 +95,9 @@ After installing or updating dependencies:
 npm run security:check
 ```
 
-CI runs `npm ci --ignore-scripts`, audit, Shai-Hulud scanning, and build verification on every push.
+## Browser support
+
+Chrome, Firefox, Safari, Edge (modern versions). Requires JavaScript enabled.
 
 ## License
 
