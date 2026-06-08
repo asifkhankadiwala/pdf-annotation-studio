@@ -1,0 +1,19 @@
+{
+  "name": "pdf-annotation-studio",
+  "version": "1.0.0",
+  "description": "Browser-based PDF annotation demo with jQuery and PDF.js",
+  "private": true,
+  "scripts": {
+    "start": "npx --yes serve . -p 8080",
+    "dev": "python3 -m http.server 8080"
+  },
+  "keywords": [
+    "pdf",
+    "annotations",
+    "jquery",
+    "pdf.js",
+    "portfolio"
+  ],
+  "author": "",
+  "license": "MIT"
+}

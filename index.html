@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PDF Annotation Studio — highlight, draw, add notes, and export annotations on any PDF in the browser." />
+  <title>PDF Annotation Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div id="app" class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header__brand">
+        <svg class="header__logo" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <rect x="4" y="2" width="20" height="26" rx="2" stroke="currentColor" stroke-width="2"/>
+          <path d="M10 12h12M10 17h8M10 22h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="24" cy="24" r="6" fill="#6366f1"/>
+          <path d="M22 24l1.5 1.5L26 22" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="header__brand-text">
+          <h1 class="header__title">PDF Annotation Studio</h1>
+          <p class="header__subtitle">Browser-based PDF markup</p>
+        </div>
+      </div>
+
+      <nav class="header__toolbar" aria-label="Markup and view controls">
+        <div class="header__cluster header__cluster--markup">
+          <span class="header__cluster-label">Markup</span>
+          <div class="header__tool-row">
+            <button type="button" class="tool-btn tool-btn--compact is-active" data-tool="select" title="Select (V)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
+            </button>
+            <button type="button" class="tool-btn tool-btn--compact" data-tool="highlight" title="Highlight (H)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </button>
+            <button type="button" class="tool-btn tool-btn--compact" data-tool="rectangle" title="Rectangle (R)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+            </button>
+            <button type="button" class="tool-btn tool-btn--compact" data-tool="note" title="Sticky note (N)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            </button>
+            <button type="button" class="tool-btn tool-btn--compact" data-tool="draw" title="Freehand (D)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5zM2 2l7.5 1.5L13 11"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="header__divider" aria-hidden="true"></div>
+
+        <div class="header__cluster header__cluster--color">
+          <span class="header__cluster-label">Color</span>
+          <div class="color-picker color-picker--header" id="color-picker">
+            <button type="button" class="color-swatch is-active" data-color="#fbbf24" style="--swatch:#fbbf24" title="Yellow"></button>
+            <button type="button" class="color-swatch" data-color="#34d399" style="--swatch:#34d399" title="Green"></button>
+            <button type="button" class="color-swatch" data-color="#60a5fa" style="--swatch:#60a5fa" title="Blue"></button>
+            <button type="button" class="color-swatch" data-color="#f472b6" style="--swatch:#f472b6" title="Pink"></button>
+            <button type="button" class="color-swatch" data-color="#ef4444" style="--swatch:#ef4444" title="Red"></button>
+          </div>
+        </div>
+
+        <div class="header__cluster header__cluster--stroke">
+          <span class="header__cluster-label">Stroke</span>
+          <div class="header__stroke-row">
+            <input type="range" id="stroke-width" min="1" max="8" value="3" class="stroke-slider stroke-slider--header" title="Stroke width" />
+            <span id="stroke-label" class="stroke-label">3px</span>
+          </div>
+        </div>
+
+        <div class="header__divider" aria-hidden="true"></div>
+
+        <div class="header__cluster header__cluster--page">
+          <span class="header__cluster-label">Page</span>
+          <div class="page-nav page-nav--header">
+            <button type="button" id="btn-prev" class="icon-btn" disabled aria-label="Previous page">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <span id="page-indicator" class="page-indicator">— / —</span>
+            <button type="button" id="btn-next" class="icon-btn" disabled aria-label="Next page">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="header__cluster header__cluster--zoom">
+          <span class="header__cluster-label">Zoom</span>
+          <div class="zoom-controls zoom-controls--header">
+            <button type="button" id="btn-zoom-out" class="icon-btn" aria-label="Zoom out">−</button>
+            <span id="zoom-label" class="zoom-label">100%</span>
+            <button type="button" id="btn-zoom-in" class="icon-btn" aria-label="Zoom in">+</button>
+          </div>
+        </div>
+
+        <button type="button" id="btn-delete" class="icon-btn icon-btn--danger" disabled title="Delete selected" aria-label="Delete selected">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+        </button>
+      </nav>
+
+      <div class="header__actions">
+        <button type="button" id="btn-sign-mode" class="btn btn--ghost btn--sm">
+          <span class="btn__text">Sign mode</span>
+        </button>
+        <button type="button" id="btn-export" class="btn btn--primary btn--sm" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          <span class="btn__text">Export</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <!-- Toolbar -->
+      <aside class="toolbar" aria-label="Annotation tools">
+        <div class="toolbar__group toolbar__group--assignee">
+          <span class="toolbar__label">Assignee</span>
+          <select id="party-select" class="party-select" title="Which party fills this field">
+            <option value="party_1">Performing Party (A)</option>
+            <option value="party_2">Contracting Party (B)</option>
+          </select>
+          <p class="party-hint">Fields are color-coded per party</p>
+        </div>
+
+        <div class="toolbar__group">
+          <span class="toolbar__label">Document fields</span>
+          <div class="pdf-field-tools">
+            <button type="button" class="pdf-tool" data-field="signature" title="Place signature field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              Signature
+            </button>
+            <button type="button" class="pdf-tool" data-field="initial" title="Place initials field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+              Initials
+            </button>
+            <button type="button" class="pdf-tool" data-field="date" title="Place date field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              Date
+            </button>
+            <div class="toolbar__divider" role="separator"></div>
+            <button type="button" class="pdf-tool" data-field="name" title="Place name field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Name
+            </button>
+            <button type="button" class="pdf-tool" data-field="company" title="Place company field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+              Company
+            </button>
+            <button type="button" class="pdf-tool" data-field="title" title="Place title field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
+              Title
+            </button>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- Viewer -->
+      <main class="viewer" id="viewer">
+        <div id="empty-state" class="empty-state">
+          <div class="empty-state__card">
+            <svg class="empty-state__icon" viewBox="0 0 80 80" fill="none">
+              <rect x="12" y="8" width="44" height="56" rx="4" stroke="#6366f1" stroke-width="3"/>
+              <path d="M22 28h34M22 38h26M22 48h30" stroke="#a5b4fc" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="58" cy="58" r="14" fill="#6366f1" fill-opacity="0.2" stroke="#6366f1" stroke-width="2"/>
+              <path d="M52 58l4 4 8-8" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h2>Loading sample contract…</h2>
+            <p>This demo always uses the built-in sample PDF.</p>
+          </div>
+        </div>
+        <div id="viewer-scroll" class="viewer__scroll hidden">
+          <div id="page-container" class="page-container"></div>
+        </div>
+      </main>
+
+      <!-- Annotations sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar__header">
+          <h2>Annotations</h2>
+          <span id="annotation-count" class="badge">0</span>
+        </div>
+        <ul id="annotation-list" class="annotation-list">
+          <li class="annotation-list__empty">No annotations yet</li>
+        </ul>
+      </aside>
+    </div>
+
+    <!-- Note editor modal -->
+    <div id="note-modal" class="modal hidden" role="dialog" aria-labelledby="note-modal-title">
+      <div class="modal__backdrop"></div>
+      <div class="modal__panel">
+        <h3 id="note-modal-title">Edit note</h3>
+        <textarea id="note-text" rows="4" placeholder="Type your note…"></textarea>
+        <div class="modal__actions">
+          <button type="button" id="note-cancel" class="btn btn--ghost">Cancel</button>
+          <button type="button" id="note-save" class="btn btn--primary">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast hidden" role="status"></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

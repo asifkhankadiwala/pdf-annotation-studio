@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PDF Sign Mode — click placeholders to fill Signature, Initials, Date, Name, Company, and Title." />
+  <title>PDF Contract Sign Mode</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/sign.css" />
+</head>
+<body>
+  <div id="app" class="app">
+    <header class="header">
+      <div class="header__brand">
+        <svg class="header__logo" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <rect x="4" y="2" width="20" height="26" rx="2" stroke="currentColor" stroke-width="2"/>
+          <path d="M10 12h12M10 17h8M10 22h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="24" cy="24" r="6" fill="#6366f1"/>
+          <path d="M22 24l1.5 1.5L26 22" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="header__brand-text">
+          <h1 class="header__title">PDF Contract Sign Mode</h1>
+          <p class="header__subtitle">Click field placeholders to fill them</p>
+        </div>
+      </div>
+
+      <nav class="header__toolbar" aria-label="Page and zoom controls">
+        <div class="header__cluster header__cluster--page">
+          <span class="header__cluster-label">Page</span>
+          <div class="page-nav page-nav--header">
+            <button type="button" id="btn-prev" class="icon-btn" disabled aria-label="Previous page">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <span id="page-indicator" class="page-indicator">— / —</span>
+            <button type="button" id="btn-next" class="icon-btn" disabled aria-label="Next page">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="header__cluster header__cluster--zoom">
+          <span class="header__cluster-label">Zoom</span>
+          <div class="zoom-controls zoom-controls--header">
+            <button type="button" id="btn-zoom-out" class="icon-btn" aria-label="Zoom out">−</button>
+            <span id="zoom-label" class="zoom-label">100%</span>
+            <button type="button" id="btn-zoom-in" class="icon-btn" aria-label="Zoom in">+</button>
+          </div>
+        </div>
+      </nav>
+
+      <div class="header__actions">
+        <a href="index.html" class="btn btn--ghost btn--sm">Markup Studio</a>
+        <button type="button" id="btn-export-pdf" class="btn btn--ghost btn--sm" disabled>Export PDF</button>
+        <button type="button" id="btn-next-field" class="btn btn--primary btn--sm" disabled>Next field</button>
+      </div>
+    </header>
+
+    <div class="workspace sign-workspace">
+      <aside class="toolbar sign-toolbar">
+        <div class="toolbar__group toolbar__group--assignee">
+          <span class="toolbar__label">Signer</span>
+          <select id="signer-party" class="party-select">
+            <option value="party_1">Performing Party (A)</option>
+            <option value="party_2">Contracting Party (B)</option>
+          </select>
+          <p class="party-hint">Only your party fields are fillable</p>
+        </div>
+
+        <div class="toolbar__group">
+          <span class="toolbar__label">Completion</span>
+          <div class="sign-stat">
+            <strong id="field-progress">0 / 0</strong>
+            <span>fields signed</span>
+          </div>
+        </div>
+
+        <div class="toolbar__group">
+          <span class="toolbar__label">My information</span>
+          <div class="profile-card">
+            <div class="profile-row"><span>Signature</span><strong id="profile-signature">—</strong></div>
+            <div class="profile-row"><span>Initials</span><strong id="profile-initials">—</strong></div>
+            <div class="profile-row"><span>Name</span><strong id="profile-name">—</strong></div>
+            <div class="profile-row"><span>Company</span><strong id="profile-company">—</strong></div>
+            <div class="profile-row"><span>Title</span><strong id="profile-title">—</strong></div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="viewer" id="viewer">
+        <div id="empty-state" class="empty-state">
+          <div class="empty-state__card">
+            <h2>Loading sample contract…</h2>
+            <p>Fields are loaded automatically from your latest markup session.</p>
+          </div>
+        </div>
+        <div id="viewer-scroll" class="viewer__scroll hidden">
+          <div id="page-container" class="page-container"></div>
+        </div>
+      </main>
+
+      <aside class="sidebar">
+        <div class="sidebar__header">
+          <h2>Field status</h2>
+          <span id="remaining-count" class="badge">0</span>
+        </div>
+        <ul id="field-list" class="annotation-list">
+          <li class="annotation-list__empty">No fields loaded yet</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div id="toast" class="toast hidden" role="status"></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script type="module" src="js/sign-app.js"></script>
+</body>
+</html>

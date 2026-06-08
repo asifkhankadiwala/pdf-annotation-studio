@@ -1,0 +1,130 @@
+.sign-workspace .annotation-layer {
+  cursor: pointer;
+}
+
+.sign-toolbar {
+  gap: 16px;
+}
+
+.sign-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+}
+
+.sign-stat strong {
+  font-size: 1rem;
+}
+
+.sign-stat span {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+}
+
+.profile-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.8rem;
+}
+
+.profile-row span {
+  color: var(--text-muted);
+}
+
+.profile-row strong {
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+.pdf-field {
+  cursor: pointer;
+}
+
+.pdf-field--filled {
+  box-shadow: 0 0 0 1px rgba(52, 211, 153, 0.45), 0 8px 18px rgba(0, 0, 0, 0.25);
+}
+
+.pdf-field--replaced {
+  display: flex;
+  align-items: center;
+  box-shadow: none;
+  background: transparent;
+  border: 0;
+}
+
+.pdf-field--filled .pdf-field__body {
+  border-color: rgba(52, 211, 153, 0.55);
+}
+
+.pdf-field__label--filled {
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.pdf-field__label--signature {
+  font-size: 18px;
+  font-style: italic;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.pdf-filled-text {
+  display: flex;
+  align-items: center;
+  cursor: move;
+  z-index: 25;
+}
+
+.pdf-filled-text__label {
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.pdf-filled-text__label--signature {
+  font-size: 18px;
+  font-style: italic;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.field-item__badge {
+  margin-left: auto;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.field-item__badge--done {
+  background: rgba(52, 211, 153, 0.22);
+  color: #34d399;
+}
+
+.field-item__badge--pending {
+  background: rgba(251, 191, 36, 0.22);
+  color: #fbbf24;
+}
+
+.annotation-list__item.is-muted {
+  opacity: 0.6;
+}
